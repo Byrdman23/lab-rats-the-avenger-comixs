@@ -25,6 +25,18 @@ kitchen.cabinet = Container("cabinet under the sink",["knife","twinkie"])
 kitchen.create_room_item("spoon")
 kitchen.create_room_item("rat")
 
+# Library
+#
+library=Room("Library","It's a mysterious place very dark and very quiet. You see a DESK as well as a SHELF.")
+
+#Library has a DESK that contains/hides 2 items, a key, and a quarter
+library.desk=Container("inside the desk.",["key","quarter"])
+library.shelf=Container("on the shelf.",["Sniper","can"])
+                                                
+
+library.create_room_item("rat")
+library.create_room_item("fork")
+
 # Small Office
 #
 smalloffice = Room("Small Office","A dark room with a mess of books and papers covering the desk. There is some mail and an ozon.ru PACKAGE. You can READ a book. You can look in the DESK.")
@@ -50,7 +62,7 @@ supplycloset = Room("Supply Closet","A small dark room with a musty smell. On on
 locked = Room("locked","")
 
 # Connect rooms. These are one-way connections.
-kitchen.link_room(locked, "EAST")
+kitchen.link_room(library, "EAST")
 kitchen.link_room(smalloffice, "SOUTH")
 kitchen.link_room(locked, "WEST")
 supplycloset.link_room(smalloffice, "EAST")
@@ -60,6 +72,7 @@ smalloffice.link_room(locked, "SOUTH")
 smalloffice.link_room(supplycloset, "WEST")
 lab.link_room(locked, "SOUTH")
 lab.link_room(smalloffice, "WEST")
+library.link_room(kitchen, "WEST")
 current_room = kitchen
 
 # Set up characters
@@ -151,6 +164,10 @@ def checkUserInput(current_room,command,heldItems):
     elif current_room.name == "Laboratory" and command == "SHELF":
         # Open lab.shelf and concat each of the contents to the end of room_items
         current_room.room_items += lab.shelf.open()
+    elif current_room.name == "Library" and command == "DESK":
+        current_room.room_items += library.desk.open()
+    elif current_room.name == "Library" and command == "SHELF":
+         current_room.room_items += library.shelf.open()
 
     # ********************************* MOVE *********************************
     else:
